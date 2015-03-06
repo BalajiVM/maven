@@ -181,7 +181,7 @@ public class DefaultVersionRangeResolver
         {
             Map<String, ArtifactRepository> versionIndex = getVersions( session, result, request );
 
-            List<Version> versions = new ArrayList<Version>();
+            List<Version> versions = new ArrayList<>();
             for ( Map.Entry<String, ArtifactRepository> v : versionIndex.entrySet() )
             {
                 try
@@ -211,13 +211,13 @@ public class DefaultVersionRangeResolver
     {
         RequestTrace trace = RequestTrace.newChild( request.getTrace(), request );
 
-        Map<String, ArtifactRepository> versionIndex = new HashMap<String, ArtifactRepository>();
+        Map<String, ArtifactRepository> versionIndex = new HashMap<>();
 
         Metadata metadata =
             new DefaultMetadata( request.getArtifact().getGroupId(), request.getArtifact().getArtifactId(),
                                  MAVEN_METADATA_XML, Metadata.Nature.RELEASE_OR_SNAPSHOT );
 
-        List<MetadataRequest> metadataRequests = new ArrayList<MetadataRequest>( request.getRepositories().size() );
+        List<MetadataRequest> metadataRequests = new ArrayList<>( request.getRepositories().size() );
 
         metadataRequests.add( new MetadataRequest( metadata, null, request.getRequestContext() ) );
 
@@ -274,23 +274,19 @@ public class DefaultVersionRangeResolver
         {
             if ( metadata != null )
             {
-                SyncContext syncContext = syncContextFactory.newInstance( session, true );
 
-                try
+                try (SyncContext syncContext = syncContextFactory.newInstance( session, true ))
                 {
                     syncContext.acquire( null, Collections.singleton( metadata ) );
 
-                    if ( metadata.getFile() != null && metadata.getFile().exists() )
+                    if ( metadata.getFile() != null && metadata.getFile()
+                                                               .exists() )
                     {
                         fis = new FileInputStream( metadata.getFile() );
                         org.apache.maven.artifact.repository.metadata.Metadata m =
                             new MetadataXpp3Reader().read( fis, false );
                         versioning = m.getVersioning();
                     }
-                }
-                finally
-                {
-                    syncContext.close();
                 }
             }
         }

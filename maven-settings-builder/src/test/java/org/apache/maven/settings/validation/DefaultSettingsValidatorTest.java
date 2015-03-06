@@ -199,7 +199,7 @@ public class DefaultSettingsValidatorTest
         implements SettingsProblemCollector
     {
 
-        public List<String> messages = new ArrayList<String>();
+        public List<String> messages = new ArrayList<>();
 
         public void add( Severity severity, String message, int line, int column, Exception cause )
         {

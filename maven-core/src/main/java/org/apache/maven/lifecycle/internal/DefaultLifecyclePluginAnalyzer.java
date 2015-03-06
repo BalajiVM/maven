@@ -91,7 +91,7 @@ public class DefaultLifecyclePluginAnalyzer
             return null;
         }
 
-        Map<Plugin, Plugin> plugins = new LinkedHashMap<Plugin, Plugin>();
+        Map<Plugin, Plugin> plugins = new LinkedHashMap<>();
 
         for ( Lifecycle lifecycle : getOrderedLifecycles() )
         {
@@ -134,7 +134,7 @@ public class DefaultLifecyclePluginAnalyzer
     {
         // NOTE: The lifecycle order can affect implied execution ids so we better be deterministic.
 
-        List<Lifecycle> lifecycles = new ArrayList<Lifecycle>( defaultLifeCycles.getLifeCycles() );
+        List<Lifecycle> lifecycles = new ArrayList<>( defaultLifeCycles.getLifeCycles() );
 
         Collections.sort( lifecycles, new Comparator<Lifecycle>()
         {
@@ -225,7 +225,7 @@ public class DefaultLifecyclePluginAnalyzer
 
     private String getExecutionId( Plugin plugin, String goal )
     {
-        Set<String> existingIds = new HashSet<String>();
+        Set<String> existingIds = new HashSet<>();
         for ( PluginExecution execution : plugin.getExecutions() )
         {
             existingIds.add( execution.getId() );

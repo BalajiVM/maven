@@ -36,7 +36,6 @@ import org.apache.maven.toolchain.io.ToolchainsParseException;
 import org.apache.maven.toolchain.io.ToolchainsReader;
 import org.apache.maven.toolchain.merge.MavenToolchainMerger;
 import org.apache.maven.toolchain.model.PersistedToolchains;
-import org.apache.maven.toolchain.model.TrackableBase;
 
 /**
  * 

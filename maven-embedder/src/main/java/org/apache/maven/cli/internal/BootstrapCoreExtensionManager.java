@@ -29,7 +29,6 @@ import javax.inject.Inject;
 import javax.inject.Named;
 
 import org.apache.maven.RepositoryUtils;
-import org.apache.maven.cli.internal.extension.model.CoreExtension;
 import org.apache.maven.execution.MavenExecutionRequest;
 import org.apache.maven.extension.internal.CoreExtensionEntry;
 import org.apache.maven.internal.aether.DefaultRepositorySystemSessionFactory;
@@ -90,7 +89,7 @@ public class BootstrapCoreExtensionManager
                                                             List<CoreExtension> configuration )
         throws Exception
     {
-        List<CoreExtensionEntry> extensions = new ArrayList<CoreExtensionEntry>();
+        List<CoreExtensionEntry> extensions = new ArrayList<>();
 
         DependencyFilter dependencyFilter = new ExclusionsDependencyFilter( providedArtifacts );
 

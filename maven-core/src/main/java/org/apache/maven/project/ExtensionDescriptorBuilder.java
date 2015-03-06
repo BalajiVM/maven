@@ -65,8 +65,7 @@ public class ExtensionDescriptorBuilder
 
         if ( extensionJar.isFile() )
         {
-            JarFile pluginJar = new JarFile( extensionJar, false );
-            try
+            try (JarFile pluginJar = new JarFile( extensionJar, false ))
             {
                 ZipEntry pluginDescriptorEntry = pluginJar.getEntry( getExtensionDescriptorLocation() );
 
@@ -83,10 +82,6 @@ public class ExtensionDescriptorBuilder
                         IOUtil.close( is );
                     }
                 }
-            }
-            finally
-            {
-                pluginJar.close();
             }
         }
         else
@@ -146,7 +141,7 @@ public class ExtensionDescriptorBuilder
 
         if ( dom != null )
         {
-            strings = new ArrayList<String>();
+            strings = new ArrayList<>();
 
             for ( Xpp3Dom child : dom.getChildren() )
             {

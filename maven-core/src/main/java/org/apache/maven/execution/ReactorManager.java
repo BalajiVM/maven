@@ -47,17 +47,17 @@ public class ReactorManager
     // make projects that depend on me, and projects that I depend on
     public static final String MAKE_BOTH_MODE = "make-both";
 
-    private List<String> blackList = new ArrayList<String>();
+    private List<String> blackList = new ArrayList<>();
 
-    private Map<String, BuildFailure> buildFailuresByProject = new HashMap<String, BuildFailure>();
+    private Map<String, BuildFailure> buildFailuresByProject = new HashMap<>();
 
-    private Map pluginContextsByProjectAndPluginKey = new HashMap();
+    private Map<String,Map<String,Map>> pluginContextsByProjectAndPluginKey = new HashMap<>();
 
     private String failureBehavior = FAIL_FAST;
 
     private final ProjectSorter sorter;
 
-    private Map<String, BuildSuccess> buildSuccessesByProject = new HashMap<String, BuildSuccess>();
+    private Map<String, BuildSuccess> buildSuccessesByProject = new HashMap<>();
 
     public ReactorManager( List<MavenProject> projects )
         throws CycleDetectedException, DuplicateProjectException
@@ -67,15 +67,15 @@ public class ReactorManager
 
     public Map getPluginContext( PluginDescriptor plugin, MavenProject project )
     {
-        Map pluginContextsByKey = (Map) pluginContextsByProjectAndPluginKey.get( project.getId() );
+        Map<String,Map> pluginContextsByKey = pluginContextsByProjectAndPluginKey.get( project.getId() );
 
         if ( pluginContextsByKey == null )
         {
-            pluginContextsByKey = new HashMap();
+            pluginContextsByKey = new HashMap<>();
             pluginContextsByProjectAndPluginKey.put( project.getId(), pluginContextsByKey );
         }
 
-        Map pluginContext = (Map) pluginContextsByKey.get( plugin.getPluginLookupKey() );
+        Map pluginContext = pluginContextsByKey.get( plugin.getPluginLookupKey() );
 
         if ( pluginContext == null )
         {
@@ -184,12 +184,12 @@ public class ReactorManager
 
     public BuildFailure getBuildFailure( MavenProject project )
     {
-        return (BuildFailure) buildFailuresByProject.get( getProjectKey( project ) );
+        return buildFailuresByProject.get( getProjectKey( project ) );
     }
 
     public BuildSuccess getBuildSuccess( MavenProject project )
     {
-        return (BuildSuccess) buildSuccessesByProject.get( getProjectKey( project ) );
+        return buildSuccessesByProject.get( getProjectKey( project ) );
     }
 
     public boolean executedMultipleProjects()

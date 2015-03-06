@@ -233,7 +233,7 @@ public class DefaultVersionResolver
         }
         else
         {
-            List<MetadataRequest> metadataReqs = new ArrayList<MetadataRequest>( request.getRepositories().size() );
+            List<MetadataRequest> metadataReqs = new ArrayList<>( request.getRepositories().size() );
 
             metadataReqs.add( new MetadataRequest( metadata, null, request.getRequestContext() ) );
 
@@ -249,7 +249,7 @@ public class DefaultVersionResolver
 
             List<MetadataResult> metadataResults = metadataResolver.resolveMetadata( session, metadataReqs );
 
-            Map<String, VersionInfo> infos = new HashMap<String, VersionInfo>();
+            Map<String, VersionInfo> infos = new HashMap<>();
 
             for ( MetadataResult metadataResult : metadataResults )
             {
@@ -343,13 +343,13 @@ public class DefaultVersionResolver
         {
             if ( metadata != null )
             {
-                SyncContext syncContext = syncContextFactory.newInstance( session, true );
 
-                try
+                try (SyncContext syncContext = syncContextFactory.newInstance( session, true ))
                 {
                     syncContext.acquire( null, Collections.singleton( metadata ) );
 
-                    if ( metadata.getFile() != null && metadata.getFile().exists() )
+                    if ( metadata.getFile() != null && metadata.getFile()
+                                                               .exists() )
                     {
                         fis = new FileInputStream( metadata.getFile() );
                         org.apache.maven.artifact.repository.metadata.Metadata m =
@@ -363,7 +363,8 @@ public class DefaultVersionResolver
                          */
                         if ( versioning != null && repository instanceof LocalRepository )
                         {
-                            if ( versioning.getSnapshot() != null && versioning.getSnapshot().getBuildNumber() > 0 )
+                            if ( versioning.getSnapshot() != null && versioning.getSnapshot()
+                                                                               .getBuildNumber() > 0 )
                             {
                                 Versioning repaired = new Versioning();
                                 repaired.setLastUpdated( versioning.getLastUpdated() );
@@ -373,15 +374,11 @@ public class DefaultVersionResolver
                                 versioning = repaired;
 
                                 throw new IOException( "Snapshot information corrupted with remote repository data"
-                                    + ", please verify that no remote repository uses the id '" + repository.getId()
-                                    + "'" );
+                                                           + ", please verify that no remote repository uses the id '"
+                                                           + repository.getId() + "'" );
                             }
                         }
                     }
-                }
-                finally
-                {
-                    syncContext.close();
                 }
             }
         }
@@ -554,7 +551,7 @@ public class DefaultVersionResolver
             version = artifact.getVersion();
             localRepo = session.getLocalRepository().getBasedir();
             workspace = CacheUtils.getWorkspace( session );
-            repositories = new ArrayList<RemoteRepository>( request.getRepositories().size() );
+            repositories = new ArrayList<>( request.getRepositories().size() );
             boolean repoMan = false;
             for ( RemoteRepository repository : request.getRepositories() )
             {

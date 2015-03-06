@@ -81,8 +81,8 @@ public class MojoExecutor
 
     public DependencyContext newDependencyContext( MavenSession session, List<MojoExecution> mojoExecutions )
     {
-        Set<String> scopesToCollect = new TreeSet<String>();
-        Set<String> scopesToResolve = new TreeSet<String>();
+        Set<String> scopesToCollect = new TreeSet<>();
+        Set<String> scopesToResolve = new TreeSet<>();
 
         collectDependencyRequirements( scopesToResolve, scopesToCollect, mojoExecutions );
 
@@ -207,19 +207,7 @@ public class MojoExecutor
             {
                 pluginManager.executeMojo( session, mojoExecution );
             }
-            catch ( MojoFailureException e )
-            {
-                throw new LifecycleExecutionException( mojoExecution, session.getCurrentProject(), e );
-            }
-            catch ( MojoExecutionException e )
-            {
-                throw new LifecycleExecutionException( mojoExecution, session.getCurrentProject(), e );
-            }
-            catch ( PluginConfigurationException e )
-            {
-                throw new LifecycleExecutionException( mojoExecution, session.getCurrentProject(), e );
-            }
-            catch ( PluginManagerException e )
+            catch ( MojoFailureException | PluginManagerException | PluginConfigurationException | MojoExecutionException e )
             {
                 throw new LifecycleExecutionException( mojoExecution, session.getCurrentProject(), e );
             }
@@ -294,7 +282,7 @@ public class MojoExecutor
         String scopeToResolve = mojoDescriptor.getDependencyResolutionRequired();
         String scopeToCollect = mojoDescriptor.getDependencyCollectionRequired();
 
-        List<String> scopes = new ArrayList<String>( 2 );
+        List<String> scopes = new ArrayList<>( 2 );
         if ( StringUtils.isNotEmpty( scopeToCollect ) )
         {
             scopes.add( scopeToCollect );
@@ -328,7 +316,7 @@ public class MojoExecutor
 
             MavenProject project = session.getCurrentProject();
 
-            forkedProjects = new ArrayList<MavenProject>( forkedExecutions.size() );
+            forkedProjects = new ArrayList<>( forkedExecutions.size() );
 
             try
             {
